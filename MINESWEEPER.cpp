@@ -6,6 +6,7 @@ const int kolumny=10;
 const int logicznamina=-1;
 char planszagracza[wiersze][kolumny];
 int planszalogiczna[wiersze][kolumny];
+
     void obliczanieprzylegajacych(int planszalogiczna[wiersze][kolumny]){
         for(int r=0;r<wiersze;r++){
             for(int c=0;c<kolumny;c++)
@@ -20,7 +21,7 @@ int planszalogiczna[wiersze][kolumny];
         }
            }
     }
-    void odkrywaniePol(int w, int k,int planszalogiczna[wiersze][kolumny], char planszagracza[wiersze][kolumny]){
+    void odkrywaniePol(int wierszgracza, int kolumnagracza,int planszalogiczna[wiersze][kolumny], char planszagracza[wiersze][kolumny]){
         //zabezpieczenie 1-pozaplanszowcy
         if(wierszgracza < 0 || wierszgracza>=wiersze || kolumnagracza<0 || kolumnagracza>=kolumny) return;
         //zabezpieczenie 2-juz odkryte pole
@@ -52,14 +53,13 @@ int ile_min=0;
 while (ile_min<15){
     int w=rand() % 10;
     int k=rand() % 10;
-    if(planszalogiczna[w][k]!=1){
-        planszalogiczna[w][k]=1;
+    if(planszalogiczna[w][k]!=-1){
+        planszalogiczna[w][k]=-1;
         planszagracza[w][k]='x';
         ile_min++;
     }
 
 }
-
 while(true){
 //------------------ rys planszy
 cout <<"   ";
@@ -76,14 +76,30 @@ for(int w=0;w<wiersze;w++){
     cout << endl;
 }
 //---------------- koniec planszy
+
 //gracz i jego dzialania
-cout <<"Podaj wierz i kolumne:";
+cout <<"Podaj wiersz i kolumne:";
 cin >> wierszgracza >> kolumnagracza;
-if(planszalogiczna[wierszgracza][kolumnagracza]=1){
-    planszagracza[wierszgracza][kolumnagracza]='#';
-
+wierszgracza--;
+kolumnagracza--;
+//if(planszalogiczna[wierszgracza][kolumnagracza]=-1){
+   // planszagracza[wierszgracza][kolumnagracza]='#';
+char akcja;
+cout << "Co chcesz zrobic?'f' - flaguj, 'o' - odkryj: ";
+cin >> akcja;
+if(akcja=='f') planszagracza[wierszgracza][kolumnagracza]='F';
+if(akcja=='f' && planszagracza[wierszgracza][kolumnagracza]=='F') planszagracza[wierszgracza][kolumnagracza]='.';
+else if(akcja=='o'){
+    if(planszalogiczna[wierszgracza][kolumnagracza]==-1){
+        cout << "BUM PRZEGRALES!";
+        return(0);
+    }
+    else{
+        odkrywaniePol(wierszgracza, kolumnagracza, planszalogiczna, planszagracza);
+    }
 }
 
-}
-}
 
+
+}
+}
