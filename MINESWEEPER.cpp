@@ -15,27 +15,32 @@ int planszalogiczna[wiersze][kolumny];
                 for(int j=-1;j<=1;j++){
                     int nowyr=r+i;
                     int nowyc=c+j;
-
+                    if(nowyr>=0 && nowyr<wiersze && nowyc>=0 && nowyc<kolumny){
+                        if(planszalogiczna[nowyr][nowyc] != logicznamina){
+                            planszalogiczna[nowyr][nowyc]++;
+                        }
+                    }
                 }
             }
         }
            }
     }
-    void odkrywaniePol(int wierszgracza, int kolumnagracza,int planszalogiczna[wiersze][kolumny], char planszagracza[wiersze][kolumny]){
+    void odkrywaniePol(int r, int c,int planszalogiczna[wiersze][kolumny], char planszagracza[wiersze][kolumny]){
+
         //zabezpieczenie 1-pozaplanszowcy
-        if(wierszgracza < 0 || wierszgracza>=wiersze || kolumnagracza<0 || kolumnagracza>=kolumny) return;
+        if(r < 0 || r>=wiersze || c<0 || c>=kolumny) return;
         //zabezpieczenie 2-juz odkryte pole
-        if(planszagracza[wierszgracza][kolumnagracza]!='-') return;
+        if(planszagracza[r][c]!='.') return;
         //odkrywanie
-        planszagracza[wierszgracza][kolumnagracza] = planszalogiczna[wierszgracza][kolumnagracza] + '0';
-    if(planszalogiczna[wierszgracza][kolumnagracza]==0){
+        planszagracza[r][c] = planszalogiczna[r][c] + '0';
+    if(planszalogiczna[r][c]==0){
         for(int i = -1;i<=1;i++){
             for(int j=-1;j<=1;j++){
-                odkrywaniePol(wierszgracza+i,kolumnagracza + j,planszalogiczna,planszagracza);
+                odkrywaniePol(r+i,c + j,planszalogiczna,planszagracza);
             }
         }
     }
-    }
+}
 int main()
 {
 srand(time(NULL));
@@ -50,7 +55,7 @@ for(int w=0;w<wiersze;w++){
     }
         }
 int ile_min=0;
-while (ile_min<15){
+while (ile_min<20){
     int w=rand() % 10;
     int k=rand() % 10;
     if(planszalogiczna[w][k]!=-1){
@@ -60,8 +65,11 @@ while (ile_min<15){
     }
 
 }
+obliczanieprzylegajacych(planszalogiczna);
 while(true){
 //------------------ rys planszy
+system("cls");
+cout << "-----WITAJ W SAPERZE-----" << endl;
 cout <<"   ";
 for(int k=0;k<kolumny;k++)
     cout << k+1<<" ";
@@ -87,19 +95,24 @@ kolumnagracza--;
 char akcja;
 cout << "Co chcesz zrobic?'f' - flaguj, 'o' - odkryj: ";
 cin >> akcja;
-if(akcja=='f') planszagracza[wierszgracza][kolumnagracza]='F';
-if(akcja=='f' && planszagracza[wierszgracza][kolumnagracza]=='F') planszagracza[wierszgracza][kolumnagracza]='.';
+if(wierszgracza<0 || wierszgracza>=wiersze || kolumnagracza<0 || kolumnagracza>=kolumny){
+    cout << "Zle wspolrzedne! Wpisz jeszcze raz." << endl;
+    continue;
+}
+if(akcja=='f'){
+    if(planszagracza[wierszgracza][kolumnagracza]=='.') planszagracza[wierszgracza][kolumnagracza]='F';
+    else if(planszagracza[wierszgracza][kolumnagracza]=='F') planszagracza[wierszgracza][kolumnagracza]='.';
+}
 else if(akcja=='o'){
-    if(planszalogiczna[wierszgracza][kolumnagracza]==-1){
-        cout << "BUM PRZEGRALES!";
-        return(0);
+    if(planszagracza[wierszgracza][kolumnagracza]=='F') cout << "Na tym polu jest flaga! Najpierw ja zdejmij" << endl;
+    else if(planszalogiczna[wierszgracza][kolumnagracza]==logicznamina){
+    cout << "BUM! PRZEGRALES!" << endl;
+    return(0);
     }
     else{
         odkrywaniePol(wierszgracza, kolumnagracza, planszalogiczna, planszagracza);
     }
 }
-
-
 
 }
 }
