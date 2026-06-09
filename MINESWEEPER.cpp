@@ -6,7 +6,24 @@ const int kolumny=10;
 const int logicznamina=-1;
 char planszagracza[wiersze][kolumny];
 int planszalogiczna[wiersze][kolumny];
+int ile_min=0;
+int ukrytepola=0;
+//warunek wytgranej-jezeli ukrytepola = liczbie min gracz wygrywa
+bool warunekwygranej(char planszagracza, int ile_min){
+    for(int w=0; w<=wiersze;w++){
+        for(int k=0;k<=kolumny;k++){
+            if(planszagracza[w][k]`=="F" || planszagracza[w][k]=="."){
+                ukrytepola++;
+                }
+            }
+        }
+    if(ukrytepola==ile_min){
+            return true;
+    }
 
+    return false;
+}
+//liczenie ile min jest dookola
     void obliczanieprzylegajacych(int planszalogiczna[wiersze][kolumny]){
         for(int r=0;r<wiersze;r++){
             for(int c=0;c<kolumny;c++)
@@ -25,6 +42,7 @@ int planszalogiczna[wiersze][kolumny];
         }
            }
     }
+    //rekurencja czyli rozlewanie i odkrywanie samego pola
     void odkrywaniePol(int r, int c,int planszalogiczna[wiersze][kolumny], char planszagracza[wiersze][kolumny]){
 
         //zabezpieczenie 1-pozaplanszowcy
@@ -85,6 +103,8 @@ for(int w=0;w<wiersze;w++){
 }
 //---------------- koniec planszy
 
+//waruek wygranej
+
 //gracz i jego dzialania
 cout <<"Podaj wiersz i kolumne:";
 cin >> wierszgracza >> kolumnagracza;
@@ -113,6 +133,10 @@ else if(akcja=='o'){
         odkrywaniePol(wierszgracza, kolumnagracza, planszalogiczna, planszagracza);
     }
 }
-
+if(warunekwygranej(planszagracza, ile_min)){
+    system("cls");
+    cout << endl << "BRAWOO! WYGRALES!!" << endl;
+    return(0);
+}
 }
 }
