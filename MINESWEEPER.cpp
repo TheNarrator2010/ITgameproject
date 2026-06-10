@@ -9,10 +9,10 @@ int planszalogiczna[wiersze][kolumny];
 int ile_min=0;
 int ukrytepola=0;
 //warunek wytgranej-jezeli ukrytepola = liczbie min gracz wygrywa
-bool warunekwygranej(char planszagracza, int ile_min){
+bool warunekwygranej(char planszagracza[wiersze][kolumny], int ile_min){
     for(int w=0; w<=wiersze;w++){
         for(int k=0;k<=kolumny;k++){
-            if(planszagracza[w][k]`=="F" || planszagracza[w][k]=="."){
+            if(planszagracza[w][k]=='F' || planszagracza[w][k]=='.'){
                 ukrytepola++;
                 }
             }
@@ -61,6 +61,7 @@ bool warunekwygranej(char planszagracza, int ile_min){
 }
 int main()
 {
+    //poczatek funkcji main, wprowadzenie losowania
 srand(time(NULL));
 const int wiersze=10;
 const int kolumny=10;
@@ -72,13 +73,14 @@ for(int w=0;w<wiersze;w++){
         planszalogiczna[w][k]=0;
     }
         }
+//losowanie min
 int ile_min=0;
 while (ile_min<20){
     int w=rand() % 10;
     int k=rand() % 10;
     if(planszalogiczna[w][k]!=-1){
         planszalogiczna[w][k]=-1;
-        planszagracza[w][k]='x';
+        //planszagracza[w][k]=='x';
         ile_min++;
     }
 
@@ -103,7 +105,6 @@ for(int w=0;w<wiersze;w++){
 }
 //---------------- koniec planszy
 
-//waruek wygranej
 
 //gracz i jego dzialania
 cout <<"Podaj wiersz i kolumne:";
@@ -133,6 +134,7 @@ else if(akcja=='o'){
         odkrywaniePol(wierszgracza, kolumnagracza, planszalogiczna, planszagracza);
     }
 }
+//sprawdzanie wygranej+
 if(warunekwygranej(planszagracza, ile_min)){
     system("cls");
     cout << endl << "BRAWOO! WYGRALES!!" << endl;
