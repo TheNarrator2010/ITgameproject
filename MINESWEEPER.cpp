@@ -80,7 +80,7 @@ while (ile_min<20){
     int k=rand() % 10;
     if(planszalogiczna[w][k]!=-1){
         planszalogiczna[w][k]=-1;
-        //planszagracza[w][k]=='x';
+        planszagracza[w][k]='x';
         ile_min++;
     }
 
@@ -111,21 +111,25 @@ cout <<"Podaj wiersz i kolumne:";
 cin >> wierszgracza >> kolumnagracza;
 wierszgracza--;
 kolumnagracza--;
-//if(planszalogiczna[wierszgracza][kolumnagracza]=-1){
-   // planszagracza[wierszgracza][kolumnagracza]='#';
-char akcja;
-cout << "Co chcesz zrobic?'f' - flaguj, 'o' - odkryj: ";
-cin >> akcja;
 if(wierszgracza<0 || wierszgracza>=wiersze || kolumnagracza<0 || kolumnagracza>=kolumny){
     cout << "Zle wspolrzedne! Wpisz jeszcze raz." << endl;
+    this_thread::sleep_for(chrono::seconds(2));
     continue;
 }
+char akcja;
+
+cout << "Co chcesz zrobic?'f' - flaguj, 'o' - odkryj: ";
+cin >> akcja;
+
 if(akcja=='f'){
     if(planszagracza[wierszgracza][kolumnagracza]=='.') planszagracza[wierszgracza][kolumnagracza]='F';
     else if(planszagracza[wierszgracza][kolumnagracza]=='F') planszagracza[wierszgracza][kolumnagracza]='.';
 }
 else if(akcja=='o'){
-    if(planszagracza[wierszgracza][kolumnagracza]=='F') cout << "Na tym polu jest flaga! Najpierw ja zdejmij" << endl;
+    if(planszagracza[wierszgracza][kolumnagracza]=='F'){
+        cout << "Na tym polu jest flaga! Najpierw ja zdejmij" << endl;
+        this_thread::sleep_for(chrono::seconds(2));
+    }
     else if(planszalogiczna[wierszgracza][kolumnagracza]==logicznamina){
     cout << "BUM! PRZEGRALES!" << endl;
     return(0);
